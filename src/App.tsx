@@ -1,16 +1,11 @@
-
-import './App.css';
+import SearchBar from 'components/SearchBar/SearchBar'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1 className="text-3xl font-bold underline select-none">
-          Hello world!
-        </h1>
-      </header>
+    <div className='w-screen h-screen flex justify-center items-center bg-stone-200'>
+      <SearchBar />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
