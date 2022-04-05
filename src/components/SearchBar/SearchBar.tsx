@@ -1,14 +1,18 @@
 import { useState } from 'react'
-import { SearchIcon, CrossIcon } from './SearchIcon'
+import { SearchIcon, CrossIcon } from './Icons'
 
-const SearchBar = () => {
-  const [isFocus, setFocus] = useState(false)
+interface SearchBarProps {
+  isFocus: boolean
+  setFocus: (newState: boolean) => void
+  handleSearchButtonClicked: (textToSearch: string) => void
+}
+
+const SearchBar = ({
+  isFocus,
+  setFocus,
+  handleSearchButtonClicked,
+}: SearchBarProps) => {
   const [searchText, setSearchText] = useState('')
-
-  const handleButtonClicked = () => {
-    if (!isFocus) return setFocus(true)
-    console.log(`Tenemos que buscar: ${searchText}`)
-  }
 
   return (
     <div>
@@ -17,7 +21,7 @@ const SearchBar = () => {
           <input
             type='text'
             placeholder='Buscar'
-            className={`outline-1 outline-none ring-1 ring-emerald-400 m-0 h-10 rounded-none rounded-l-full grow text-stone-600 transition-all duration-300 ease-in-out ${
+            className={`outline-1 outline-none ring-1 ring-indigo-600 m-0 h-10 rounded-none rounded-l-full grow text-stone-600 transition-all duration-300 ease-in-out ${
               isFocus ? 'pl-3 w-80 opacity-100' : 'w-0 p-0 opacity-0'
             }`}
             onChange={(e) => setSearchText(e.target.value)}
@@ -33,10 +37,10 @@ const SearchBar = () => {
           </button>
         </div>
         <button
-          className={`w-10 h-10 bg-emerald-400 ring-emerald-400 text-white flex justify-center items-center  transition-all duration-300 ease-in-out  ${
+          className={`w-10 h-10 bg-indigo-600 ring-indigo-600 text-white flex justify-center items-center  transition-all duration-300 ease-in-out  ${
             isFocus ? 'rounded-r-full' : 'rounded-full'
           }`}
-          onClick={() => handleButtonClicked()}
+          onClick={() => handleSearchButtonClicked(searchText)}
         >
           <SearchIcon />
         </button>
