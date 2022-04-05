@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import clsx from 'clsx'
+import { useEffect, useRef, useState } from 'react'
 import { SearchIcon, CrossIcon } from './Icons'
 
 interface SearchBarProps {
@@ -13,6 +14,14 @@ const SearchBar = ({
   handleSearchButtonClicked,
 }: SearchBarProps) => {
   const [searchText, setSearchText] = useState('')
+  const inputElement = useRef<any>()
+  const animationClasses = 'transition-all duration-300 ease-in-out'
+
+  useEffect(() => {
+    if (inputElement.current) {
+      inputElement.current.focus()
+    }
+  }, [isFocus])
 
   return (
     <div>
@@ -21,25 +30,43 @@ const SearchBar = ({
           <input
             type='text'
             placeholder='Buscar'
-            className={`outline-1 outline-none ring-1 ring-indigo-600 m-0 h-10 rounded-none rounded-l-full grow text-stone-600 transition-all duration-300 ease-in-out ${
+            className={clsx(
+              'h-10',
+              'm-0 grow',
+              'ring-1 ring-indigo-600 text-stone-600 outline-none rounded-none rounded-l-full',
+              animationClasses,
               isFocus ? 'pl-3 w-80 opacity-100' : 'w-0 p-0 opacity-0'
-            }`}
+            )}
             onChange={(e) => setSearchText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.code == 'Enter') handleSearchButtonClicked(searchText)
+            }}
             value={searchText}
+            ref={inputElement}
           />
           <button
-            className={`absolute right-3 text-stone-300 transition-all duration-300 ease-in-out ${
+            className={clsx(
+              'absolute right-3',
+              'text-stone-300 outline-none',
+              animationClasses,
               isFocus ? 'opacity-100' : 'opacity-0'
-            }`}
-            onClick={() => setFocus(false)}
+            )}
+            onClick={() => {
+              setFocus(false)
+              setSearchText('')
+            }}
           >
             <CrossIcon />
           </button>
         </div>
         <button
-          className={`w-10 h-10 bg-indigo-600 ring-indigo-600 text-white flex justify-center items-center  transition-all duration-300 ease-in-out  ${
+          className={clsx(
+            'w-10 h-10',
+            'flex justify-center items-center',
+            'bg-indigo-600 ring-1 ring-indigo-600 text-white',
+            animationClasses,
             isFocus ? 'rounded-r-full' : 'rounded-full'
-          }`}
+          )}
           onClick={() => handleSearchButtonClicked(searchText)}
         >
           <SearchIcon />
