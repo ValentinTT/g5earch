@@ -1,12 +1,28 @@
 import SearchBar from 'components/SearchBar/SearchBar'
 import Title from 'components/Title'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { createServer } from 'miragejs'
 
-function App() {
+let server = createServer({})
+server.get('/api/buscar/:text', (schema, req) => {
+  console.log(req)
+  return Array.from({ length: Math.floor(Math.random() * 5) }, () => ({
+    link: 'https://www.anderson1.org/site/handlers/filedownload.ashx?moduleinstanceid=24440&dataid=44258&FileName=hobbit.pdf',
+    title: 'The hoBbIt',
+    preview: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+  }))
+})
+
+export default function App() {
   const [isFocus, setFocus] = useState(false)
   const handleButtonClicked = (searchText: string) => {
     if (!isFocus) return setFocus(true)
     console.log(`Tenemos que buscar: ${searchText}`)
+    fetch('/api/buscar/' + encodeURIComponent(searchText))
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json)
+      })
   }
 
   return (
@@ -20,5 +36,3 @@ function App() {
     </div>
   )
 }
-
-export default App
