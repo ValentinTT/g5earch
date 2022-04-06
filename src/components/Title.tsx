@@ -6,8 +6,8 @@ interface G5earchTitleProps {
 export default ({ isFocus, children }: G5earchTitleProps) => {
   return (
     <h1
-      className={`transition-all duration-300 ease-in-out select-none ${
-        isFocus ? 'mb-5 text-4xl' : 'pr-10 -ml-24 -mb-8 text-xl '
+      className={`transition-all duration-300 ease-in-out select-none mb-3 z-10 text-indigo-600 font-semibold ${
+        isFocus ? 'text-4xl' : 'text-xl -translate-x-10 translate-y-11'
       }`}
     >
       {children}

@@ -65,7 +65,7 @@ const SearchBar = ({
             'flex justify-center items-center',
             'bg-indigo-600 ring-1 ring-indigo-600 text-white',
             animationClasses,
-            isFocus ? 'rounded-r-full' : 'rounded-full'
+            isFocus ? 'rounded-r-full' : 'rounded-full translate-x-10'
           )}
           onClick={() => handleSearchButtonClicked(searchText)}
         >
