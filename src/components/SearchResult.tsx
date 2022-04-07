@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { ReactNode } from 'react'
 import { SearchResultResponse } from '../@types/searchResultResponse'
 
-export function SearchResultContainer({ children }: { children: ReactNode }) {
+export function SearchResultTable({ children }: { children: ReactNode }) {
   return (
     <div className='rounded-lg flex flex-col justify-center items-center lg:w-1/3  md:w-1/2 w-full mx-5 space-y-3'>
       {children}

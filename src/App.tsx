@@ -1,11 +1,12 @@
-import SearchBar from 'components/SearchBar'
-import Title from 'components/Title'
 import { useState } from 'react'
-import { createServer } from 'miragejs'
-import { SearchResultResponse } from './@types/searchResultResponse'
-import SearchResult, { SearchResultContainer } from 'components/SearchResult'
 import clsx from 'clsx'
+import { createServer } from 'miragejs'
 import { ThemeButton } from 'components/ThemeButton'
+import Title from 'components/Title'
+import SearchBar from 'components/SearchBar'
+import LoadingSpinner from 'components/LoadingSpinner'
+import { SearchResultResponse } from './@types/searchResultResponse'
+import SearchResult, { SearchResultTable } from 'components/SearchResult'
 
 let server = createServer({})
 server.get('/api/buscar/:text', (schema, req): SearchResultResponse[] => {
@@ -19,6 +20,7 @@ server.get('/api/buscar/:text', (schema, req): SearchResultResponse[] => {
 })
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(false)
   const [isFocus, setFocus] = useState(false)
   const [searchResults, setSearchResults] = useState<SearchResultResponse[]>(
     Array.from({ length: Math.floor(Math.random() * 3 + 1) }, () => ({
@@ -31,13 +33,16 @@ export default function App() {
 
   const handleButtonClicked = (searchText: string) => {
     if (!isFocus) return setFocus(true)
-    fetch('/api/buscar/' + encodeURIComponent(searchText))
-      .then((res) => res.json())
-      .then((json) => {
-        setSearchResults(json)
-      })
+    setIsLoading((_) => {
+      fetch('/api/buscar/' + encodeURIComponent(searchText))
+        .then((res) => res.json())
+        .then((json) => {
+          setSearchResults(json)
+          setIsLoading(false)
+        })
+      return true
+    })
   }
-  const bg = ''
 
   return (
     <div
@@ -57,11 +62,15 @@ export default function App() {
           handleSearchButtonClicked={handleButtonClicked}
         />
       </div>
-      <SearchResultContainer>
-        {searchResults?.map((result, index) => (
-          <SearchResult result={result} index={index} />
-        ))}
-      </SearchResultContainer>
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <SearchResultTable>
+          {searchResults?.map((result, index) => (
+            <SearchResult result={result} index={index} />
+          ))}
+        </SearchResultTable>
+      )}
     </div>
   )
 }
