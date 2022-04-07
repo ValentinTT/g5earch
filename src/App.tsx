@@ -1,9 +1,11 @@
-import SearchBar from 'components/SearchBar/SearchBar'
+import SearchBar from 'components/SearchBar'
 import Title from 'components/Title'
 import { useState } from 'react'
 import { createServer } from 'miragejs'
-import { SearchResultResponse } from 'types/SearchResultResponse'
+import { SearchResultResponse } from './@types/searchResultResponse'
 import SearchResult, { SearchResultContainer } from 'components/SearchResult'
+import clsx from 'clsx'
+import { ThemeButton } from 'components/ThemeButton'
 
 let server = createServer({})
 server.get('/api/buscar/:text', (schema, req): SearchResultResponse[] => {
@@ -39,9 +41,14 @@ export default function App() {
 
   return (
     <div
-      className={`w-screen h-screen flex flex-col justify-center items-center space-y-5 ${bg}`}
-      style={{ backgroundColor: '#FAFAFA' }}
+      className={clsx(
+        'm-0 p-0 py-10',
+        'h-screen w-screen',
+        'flex flex-col justify-center items-center space-y-5',
+        'bg-[#FAFAFA] dark:bg-[#111827]'
+      )}
     >
+      <ThemeButton />
       <div className='flex flex-col justify-center items-center '>
         <Title isFocus={isFocus}>G5earch!</Title>
         <SearchBar

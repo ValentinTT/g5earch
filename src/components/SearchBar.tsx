@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { useEffect, useRef, useState } from 'react'
-import { SearchIcon, CrossIcon } from './Icons'
+import { AiOutlineClose, AiOutlineSearch } from 'react-icons/ai'
 
 interface SearchBarProps {
   isFocus: boolean
@@ -56,7 +56,7 @@ const SearchBar = ({
               setSearchText('')
             }}
           >
-            <CrossIcon />
+            <AiOutlineClose className='text-xl' />
           </button>
         </div>
         <button
@@ -65,11 +65,13 @@ const SearchBar = ({
             'flex justify-center items-center',
             'bg-gradient-to-r from-red-500 via-red-500 to-yellow-500 ring-red-500 text-white',
             animationClasses,
-            isFocus ? 'rounded-r-full ring-1' : 'rounded-full translate-x-10'
+            isFocus
+              ? 'rounded-r-full ring-1'
+              : 'rounded-full translate-x-12 hover:scale-105 hover:shadow-lg'
           )}
           onClick={() => handleSearchButtonClicked(searchText)}
         >
-          <SearchIcon />
+          <AiOutlineSearch className='text-2xl' />
         </button>
       </div>
     </div>

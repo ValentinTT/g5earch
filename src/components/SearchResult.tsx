@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { ReactNode } from 'react'
-import { SearchResultResponse } from 'types/SearchResultResponse'
+import { SearchResultResponse } from '../@types/searchResultResponse'
 
 export function SearchResultContainer({ children }: { children: ReactNode }) {
   return (
@@ -21,9 +21,15 @@ export default function SearchResult({
     <a
       href={result.link}
       target='_blank'
+      rel='noreferrer'
       key={result.link + index}
       className={clsx(
-        'w-full bg-white flex gap-3 items-center font-semibold text-neutral-900 p-3 hover:bg-neutral-50 rounded-md hover:cursor-pointer shadow-sm hover:shadow-lg transition-all duration-300 hover:z-10 hover:translate-x-1 border-2 border-stone-300'
+        'w-full ',
+        'flex gap-3 items-center p-3 ',
+        'bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800 ',
+        'text-neutral-900 dark:text-stone-300',
+        'rounded-md border-2 border-stone-300 dark:border-0 shadow-sm font-semibold',
+        'hover:cursor-pointer hover:shadow-lg transition-all hover:z-10 hover:translate-x-1 '
       )}
     >
       <div className='flex flex-col w-full'>
