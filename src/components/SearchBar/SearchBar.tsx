@@ -15,7 +15,7 @@ const SearchBar = ({
 }: SearchBarProps) => {
   const [searchText, setSearchText] = useState('')
   const inputElement = useRef<any>()
-  const animationClasses = 'transition-all duration-300 ease-in-out'
+  const animationClasses = 'transition-all ease-in-out'
 
   useEffect(() => {
     if (inputElement.current) {
@@ -33,13 +33,13 @@ const SearchBar = ({
             className={clsx(
               'h-10',
               'm-0 grow',
-              'ring-1 ring-indigo-600 text-stone-600 outline-none rounded-none rounded-l-full',
+              'ring-1 ring-pink-500 text-stone-600 outline-none rounded-none rounded-l-full',
               animationClasses,
               isFocus ? 'pl-3 w-80 opacity-100' : 'w-0 p-0 opacity-0'
             )}
             onChange={(e) => setSearchText(e.target.value)}
             onKeyDown={(e) => {
-              if (e.code == 'Enter') handleSearchButtonClicked(searchText)
+              if (e.code === 'Enter') handleSearchButtonClicked(searchText)
             }}
             value={searchText}
             ref={inputElement}
@@ -63,9 +63,9 @@ const SearchBar = ({
           className={clsx(
             'w-10 h-10',
             'flex justify-center items-center',
-            'bg-indigo-600 ring-1 ring-indigo-600 text-white',
+            'bg-gradient-to-r from-red-500 via-red-500 to-yellow-500 ring-red-500 text-white',
             animationClasses,
-            isFocus ? 'rounded-r-full' : 'rounded-full translate-x-10'
+            isFocus ? 'rounded-r-full ring-1' : 'rounded-full translate-x-10'
           )}
           onClick={() => handleSearchButtonClicked(searchText)}
         >

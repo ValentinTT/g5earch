@@ -1,14 +1,9 @@
 import SearchBar from 'components/SearchBar/SearchBar'
 import Title from 'components/Title'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { createServer } from 'miragejs'
-import clsx from 'clsx'
-
-interface SearchResultResponse {
-  link: string
-  title: string
-  preview: string
-}
+import { SearchResultResponse } from 'types/SearchResultResponse'
+import SearchResult, { SearchResultContainer } from 'components/SearchResult'
 
 let server = createServer({})
 server.get('/api/buscar/:text', (schema, req): SearchResultResponse[] => {
@@ -40,10 +35,12 @@ export default function App() {
         setSearchResults(json)
       })
   }
-  const bg = 'bg-gradient-to-t from-gray-400 to-gray-100 bg-gradient-to-r'
+  const bg = ''
+
   return (
     <div
       className={`w-screen h-screen flex flex-col justify-center items-center space-y-5 ${bg}`}
+      style={{ backgroundColor: '#FAFAFA' }}
     >
       <div className='flex flex-col justify-center items-center '>
         <Title isFocus={isFocus}>G5earch!</Title>
@@ -53,25 +50,11 @@ export default function App() {
           handleSearchButtonClicked={handleButtonClicked}
         />
       </div>
-      <div className='rounded-lg flex flex-col justify-center items-center lg:w-1/3  md:w-1/2 w-full mx-5 space-y-3'>
+      <SearchResultContainer>
         {searchResults?.map((result, index) => (
-          <a
-            href={result.link}
-            target='_blank'
-            key={result.link + index}
-            className={clsx(
-              'w-full bg-white odd:bg-white flex gap-3 items-center font-semibold text-neutral-900 p-3 hover:bg-neutral-50 rounded-md hover:cursor-pointer shadow-sm hover:shadow-lg transition-all duration-300 hover:z-10'
-            )}
-          >
-            <div className='flex flex-col w-full'>
-              <h3 className='truncate font-semibold'>{result.title}</h3>
-              <p className='truncate font-medium pl-2 text-sm'>
-                {result.preview}
-              </p>
-            </div>
-          </a>
+          <SearchResult result={result} index={index} />
         ))}
-      </div>
+      </SearchResultContainer>
     </div>
   )
 }
