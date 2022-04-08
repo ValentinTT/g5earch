@@ -11,7 +11,7 @@ import SearchResult, { SearchResultTable } from 'components/SearchResult'
 let server = createServer({})
 server.get('/api/buscar/:text', (schema, req): SearchResultResponse[] => {
   console.log(req)
-  return Array.from({ length: Math.floor(Math.random() * 3 + 1) }, () => ({
+  return Array.from({ length: Math.floor(Math.random() * 7 + 1) }, () => ({
     link: 'https://www.anderson1.org/site/handlers/filedownload.ashx?moduleinstanceid=24440&dataid=44258&FileName=hobbit.pdf',
     title: 'The Hobbit',
     preview:
@@ -23,7 +23,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [isFocus, setFocus] = useState(false)
   const [searchResults, setSearchResults] = useState<SearchResultResponse[]>(
-    Array.from({ length: Math.floor(Math.random() * 3 + 1) }, () => ({
+    Array.from({ length: Math.floor(5) }, () => ({
       link: 'https://www.anderson1.org/site/handlers/filedownload.ashx?moduleinstanceid=24440&dataid=44258&FileName=hobbit.pdf',
       title: 'The Hobbit',
       preview:
@@ -47,8 +47,8 @@ export default function App() {
   return (
     <div
       className={clsx(
-        'm-0 p-0 py-10',
-        'h-screen w-screen',
+        'p-10 md:m-0 md:p-0 py-10',
+        'min-h-screen w-screen',
         'flex flex-col justify-center items-center space-y-5',
         'bg-[#FAFAFA] dark:bg-[#111827]'
       )}
