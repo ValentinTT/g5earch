@@ -47,9 +47,11 @@ export default function App() {
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <SearchResultTable>
+        <SearchResultTable
+          handleCloseButtonClicked={() => setSearchResults([])}
+        >
           {searchResults?.map((result, index) => (
-            <SearchResult result={result} index={index} />
+            <SearchResult result={result} key={result.link + index} />
           ))}
         </SearchResultTable>
       )}

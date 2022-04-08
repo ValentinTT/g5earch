@@ -1,10 +1,29 @@
 import clsx from 'clsx'
-import { ReactNode } from 'react'
+import { Children, ReactNode } from 'react'
+import { AiOutlineClose } from 'react-icons/ai'
 import { SearchResultResponse } from '../@types/searchResultResponse'
 
-export function SearchResultTable({ children }: { children: ReactNode }) {
+export function SearchResultTable({
+  children,
+  handleCloseButtonClicked,
+}: {
+  children: ReactNode
+  handleCloseButtonClicked: () => void
+}) {
   return (
-    <div className='rounded-lg flex flex-col justify-center items-center lg:w-1/3  md:w-1/2 w-full mx-5 space-y-3'>
+    <div className='rounded-lg flex flex-col justify-center items-center lg:w-1/3  md:w-1/2 w-full mx-5 py-5 space-y-3 relative'>
+      {Children.count(children) == 0 || (
+        <button
+          className={clsx(
+            'absolute right-0 top-0',
+            'text-neutral-800 hover:text-neutral-700 dark:text-stone-300 dark:hover:text-stone-400',
+            'hover:scale-105 transition-all outline-none'
+          )}
+          onClick={handleCloseButtonClicked}
+        >
+          <AiOutlineClose className='text-xl' />
+        </button>
+      )}
       {children}
     </div>
   )
@@ -12,17 +31,14 @@ export function SearchResultTable({ children }: { children: ReactNode }) {
 
 export default function SearchResult({
   result,
-  index,
 }: {
   result: SearchResultResponse
-  index: number
 }) {
   return (
     <a
       href={result.link}
       target='_blank'
       rel='noreferrer'
-      key={result.link + index}
       className={clsx(
         'w-full ',
         'flex gap-3 items-center p-3 ',
