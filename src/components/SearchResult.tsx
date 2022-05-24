@@ -12,7 +12,7 @@ export function SearchResultTable({
 }) {
   return (
     <div className='rounded-lg flex flex-col justify-center items-center lg:w-1/3  md:w-1/2 w-full mx-5 py-5 space-y-3 relative'>
-      {Children.count(children) == 0 || (
+      {Children.count(children) === 0 || (
         <button
           className={clsx(
             'absolute right-0 top-0',
