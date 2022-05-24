@@ -6,6 +6,7 @@ import SearchBar from 'components/SearchBar'
 import LoadingSpinner from 'components/LoadingSpinner'
 import { SearchResultResponse } from './@types/searchResultResponse'
 import SearchResult, { SearchResultTable } from 'components/SearchResult'
+import UploadModal from 'components/UploadModal/UploadModal'
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false)
@@ -31,7 +32,7 @@ export default function App() {
       className={clsx(
         'p-10 md:m-0 md:p-0 py-10',
         'min-h-screen w-screen',
-        'flex flex-col justify-center items-center space-y-5',
+        'flex flex-col justify-center items-center',
         'bg-[#FAFAFA] dark:bg-[#111827]'
       )}
     >
@@ -55,6 +56,7 @@ export default function App() {
           ))}
         </SearchResultTable>
       )}
+      <UploadModal />
     </div>
   )
 }
