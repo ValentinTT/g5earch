@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { gradient } from './../constants'
 import { useEffect, useRef, useState } from 'react'
 import { AiOutlineClose, AiOutlineSearch } from 'react-icons/ai'
 
@@ -63,7 +64,8 @@ const SearchBar = ({
           className={clsx(
             'w-10 h-10',
             'flex justify-center items-center',
-            'bg-gradient-to-r from-red-500 via-red-500 to-yellow-500 ring-red-500 text-white',
+            'text-white',
+            gradient,
             animationClasses,
             isFocus
               ? 'rounded-r-full ring-1'
