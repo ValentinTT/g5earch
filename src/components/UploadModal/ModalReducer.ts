@@ -1,4 +1,5 @@
 import {
+  Action,
   Actions,
   dropInfo,
   dropState,
@@ -6,11 +7,9 @@ import {
   initialState,
 } from './modal.types'
 
-export function reducer(
-  state: dropState,
-  action: { type: Actions; file?: File }
-): dropState {
-  switch (action.type) {
+export function reducer(state: dropState, action: Action): dropState {
+  const { type, file } = action
+  switch (type) {
     case Actions.onDragLeave:
       if (state.file === undefined) return initialState
       return {
@@ -24,8 +23,8 @@ export function reducer(
       }
     case Actions.onDropAccepted:
       return {
-        file: action.file,
-        message: `File ${action.file?.name} successfully load`,
+        file,
+        message: `File ${file?.name} successfully load`,
         borderColor: dropInfo[DropStates.accepted],
       }
     case Actions.onDropRejected:

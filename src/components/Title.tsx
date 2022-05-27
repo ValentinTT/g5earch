@@ -1,26 +1,21 @@
 import clsx from 'clsx'
+import { animationClasses, gradient } from 'constants/constants'
 
-interface G5earchTitleProps {
-  isFocus: boolean
-  children: React.ReactNode
-}
-
-export default function Title({ isFocus, children }: G5earchTitleProps) {
-  const textColor =
-    'text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500'
+const Title: React.FC<{ isFocus: boolean }> = ({ isFocus, children }) => {
   return (
     <div
       className={clsx(
-        textColor,
-        'transition-all ease-in-out',
+        'text-transparent bg-clip-text',
+        gradient,
+        animationClasses,
         isFocus ? '' : ' -translate-x-12 translate-y-12'
       )}
     >
       <h1
         className={clsx(
-          'mb-3 z-10',
+          'mb-3 z-20',
           'font-semibold select-none',
-          'transition-all ease-in-out',
+          animationClasses,
           isFocus ? 'text-6xl' : 'text-3xl'
         )}
       >
@@ -29,3 +24,5 @@ export default function Title({ isFocus, children }: G5earchTitleProps) {
     </div>
   )
 }
+
+export default Title

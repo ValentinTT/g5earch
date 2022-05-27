@@ -2,10 +2,10 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import { FaUpload } from 'react-icons/fa'
 import CircleButton from '../CircleButton'
-import { gradient } from '../../constants'
+import { gradient } from '../../constants/constants'
 import Modal from './Modal'
 
-const UploadModal = () => {
+const UploadModal: React.FC = () => {
   const [isModalVisible, setModalVisible] = useState(false)
 
   return (
@@ -17,10 +17,7 @@ const UploadModal = () => {
       <CircleButton
         position='bottom-0 right-0'
         bg={clsx(` text-white ${gradient}`)}
-        onClick={() => {
-          console.log(': ', isModalVisible)
-          setModalVisible(!isModalVisible)
-        }}
+        onClick={() => setModalVisible(!isModalVisible)}
       >
         <FaUpload className='text-white text-base' />
       </CircleButton>

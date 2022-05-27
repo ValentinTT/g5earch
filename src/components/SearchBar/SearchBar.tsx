@@ -1,7 +1,7 @@
 import clsx from 'clsx'
-import { gradient } from './../constants'
-import { useEffect, useRef, useState } from 'react'
-import { AiOutlineClose, AiOutlineSearch } from 'react-icons/ai'
+import { animationClasses } from 'constants/constants'
+import React, { useEffect, useRef, useState } from 'react'
+import { CloseButton, SearchButton } from './Buttons'
 
 interface SearchBarProps {
   isFocus: boolean
@@ -9,14 +9,13 @@ interface SearchBarProps {
   handleSearchButtonClicked: (textToSearch: string) => void
 }
 
-const SearchBar = ({
+const SearchBar: React.FC<SearchBarProps> = ({
   isFocus,
   setFocus,
   handleSearchButtonClicked,
-}: SearchBarProps) => {
+}) => {
   const [searchText, setSearchText] = useState('')
   const inputElement = useRef<any>()
-  const animationClasses = 'transition-all ease-in-out'
 
   useEffect(() => {
     if (inputElement.current) {
@@ -25,8 +24,8 @@ const SearchBar = ({
   }, [isFocus])
 
   return (
-    <div>
-      <div className='flex w-auto'>
+    <>
+      <div className='flex w-auto z-0'>
         <div className='relative flex justify-center items-center'>
           <input
             type='text'
@@ -45,38 +44,20 @@ const SearchBar = ({
             value={searchText}
             ref={inputElement}
           />
-          <button
-            className={clsx(
-              'absolute right-3',
-              'text-stone-300 outline-none',
-              animationClasses,
-              isFocus ? 'opacity-100' : 'opacity-0'
-            )}
+          <CloseButton
+            isFocus={isFocus}
             onClick={() => {
               setFocus(false)
               setSearchText('')
             }}
-          >
-            <AiOutlineClose className='text-xl' />
-          </button>
+          />
         </div>
-        <button
-          className={clsx(
-            'w-10 h-10',
-            'flex justify-center items-center',
-            'text-white',
-            gradient,
-            animationClasses,
-            isFocus
-              ? 'rounded-r-full ring-1'
-              : 'rounded-full translate-x-12 hover:scale-105 hover:shadow-lg'
-          )}
+        <SearchButton
+          isFocus={isFocus}
           onClick={() => handleSearchButtonClicked(searchText)}
-        >
-          <AiOutlineSearch className='text-2xl' />
-        </button>
+        />
       </div>
-    </div>
+    </>
   )
 }
 

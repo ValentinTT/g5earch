@@ -1,3 +1,4 @@
+import { animationClasses } from 'constants/constants'
 import React from 'react'
 
 interface CircleButtonProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -17,7 +18,7 @@ const CircleButton: React.FC<CircleButtonProps> = ({
       {...divProps}
     >
       <div
-        className={`transition ease-in-out rounded-full p-3  cursor-pointer ${bg} hover:scale-105`}
+        className={`${animationClasses} rounded-full p-3  cursor-pointer ${bg} hover:scale-105`}
       >
         {children}
       </div>

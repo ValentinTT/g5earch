@@ -13,6 +13,11 @@ export enum Actions {
   Restart,
 }
 
+export interface Action {
+  type: Actions
+  file?: File
+}
+
 export interface dropState {
   file?: File
   message: string
