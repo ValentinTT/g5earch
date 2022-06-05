@@ -51,9 +51,7 @@ export default function App() {
         <Title isFocus={isFocus}>G5earch!</Title>
         <SearchBar
           isFocus={isFocus}
-          setFocus={() => {
-            return setFocus
-          }}
+          setFocus={setFocus}
           handleSearchButtonClicked={handleButtonClicked}
         />
       </div>
