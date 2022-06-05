@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { IoIosCloseCircleOutline } from 'react-icons/io'
 import React, { useEffect, useReducer } from 'react'
 
 import Dropzone from 'react-dropzone'
@@ -41,7 +42,27 @@ const DropZoneModal: React.FC<{
   )
 }
 
-const UploadButton: React.FC<{ state: dropState }> = ({ state }) => {
+const UploadButton: React.FC<{ state: dropState; closeModal: () => void }> = ({
+  state,
+  closeModal,
+}) => {
+  const uploadFile = (file?: File) => {
+    if (file === undefined) return
+
+    let formData = new FormData()
+    formData.append('File', file)
+    fetch('upload', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((res) => {
+        if (res.ok) {
+          closeModal()
+          console.log(res)
+        } else console.log("Couldn't upload, ", res)
+      })
+      .catch((e) => console.log(e))
+  }
   return (
     <button
       className={clsx(
@@ -53,10 +74,7 @@ const UploadButton: React.FC<{ state: dropState }> = ({ state }) => {
         'font-semibold rounded-sm p-1',
         animationClasses
       )}
-      onClick={() => {
-        if (state.file === undefined) return
-        console.log('Dale mandale')
-      }}
+      onClick={() => uploadFile(state.file)}
     >
       Upload
     </button>
@@ -84,20 +102,26 @@ const Modal: React.FC<{
       <div
         className={clsx(
           'h-full w-full absolute top-0 left-0',
-          'bg-neutral-200 dark:bg-[#010817]'
+          'bg-stone-300 dark:bg-[#010817]'
         )}
         onClick={() => closeModal()}
       />
       {/* Modal */}
       <div
         className={clsx(
-          'bg-white dark:bg-neutral-800 w-96',
+          'bg-neutral-200 dark:bg-neutral-800 w-96',
           'z-50 container shadow-md rounded-md p-4'
         )}
       >
+        <div className='w-full flex justify-end pb-3'>
+          {/* Close Button */}
+          <button onClick={() => closeModal()}>
+            <IoIosCloseCircleOutline className='text-neutral-900 dark:text-stone-300 text-2xl cursor-pointer hover:text-red-600 dark:hover:text-red-600' />
+          </button>
+        </div>
         <DropZoneModal state={state} dispatch={dispatch} />
         <div className='w-full flex justify-end pt-5'>
-          <UploadButton state={state} />
+          <UploadButton state={state} closeModal={closeModal} />
         </div>
       </div>
     </div>

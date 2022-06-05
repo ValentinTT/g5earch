@@ -24,7 +24,7 @@ export interface dropState {
   borderColor: string
 }
 export const dropInfo: { [key in DropStates]: string } = {
-  [DropStates.none]: 'dark:border-slate-400',
+  [DropStates.none]: 'dark:border-slate-400 border-slate-400',
   [DropStates.onDrag]: 'border-blue-700',
   [DropStates.accepted]: ' border-green-600',
   [DropStates.rejected]: 'border-red-700',

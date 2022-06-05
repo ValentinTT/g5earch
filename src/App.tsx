@@ -11,22 +11,32 @@ import UploadModal from 'components/UploadModal/UploadModal'
 export default function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [isFocus, setFocus] = useState(false)
-  const [searchResults, setSearchResults] = useState<SearchResultResponse[]>()
+  const [searchResults, setSearchResults] = useState<SearchResultResponse[]>([])
 
-  const handleButtonClicked = (searchText: string) => {
+  const handleButtonClicked = async (searchText: string) => {
     if (!isFocus) return setFocus(true)
     if (searchText === '') return
-    setIsLoading((_) => {
-      fetch('/buscar?text=' + encodeURIComponent(searchText))
-        .then((res) => res.json())
-        .then((json: { response: SearchResultResponse[] }) => {
-          setSearchResults(json.response)
-          setIsLoading(false)
-        })
-      return true
-    })
+    setIsLoading(true)
+    setTimeout(() => {
+      if (isLoading) setIsLoading(false)
+    }, 3000)
+    try {
+      let res = await fetch('/search?text=' + encodeURIComponent(searchText))
+      let aux = await res.json()
+      console.log('Response: ', aux)
+      setSearchResults(() => {
+        setIsLoading(false)
+        return aux
+      })
+    } catch (e) {
+      console.log('Error')
+      setIsLoading((_) => {
+        setFocus(false)
+        return false
+      })
+    }
   }
-
+  console.log('Search R: ', searchResults)
   return (
     <div
       className={clsx(
@@ -41,19 +51,24 @@ export default function App() {
         <Title isFocus={isFocus}>G5earch!</Title>
         <SearchBar
           isFocus={isFocus}
-          setFocus={setFocus}
+          setFocus={() => {
+            return setFocus
+          }}
           handleSearchButtonClicked={handleButtonClicked}
         />
       </div>
       {isLoading ? (
-        <LoadingSpinner />
+        <div className='pt-10'>
+          <LoadingSpinner />
+        </div>
       ) : (
         <SearchResultTable
           handleCloseButtonClicked={() => setSearchResults([])}
         >
-          {searchResults?.map((result, index) => (
-            <SearchResult result={result} key={result.link + index} />
-          ))}
+          {searchResults?.map((result, index) => {
+            console.log(result)
+            return <SearchResult result={result} key={result.link + index} />
+          })}
         </SearchResultTable>
       )}
       <UploadModal />

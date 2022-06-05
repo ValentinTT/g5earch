@@ -32,7 +32,7 @@ const SearchResult: React.FC<{
 }> = ({ result }) => {
   return (
     <a
-      href={result.link}
+      href={`http://localhost:8080/download/${result.title}`}
       target='_blank'
       rel='noreferrer'
       className={clsx(
