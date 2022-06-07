@@ -11,7 +11,9 @@ import UploadModal from 'components/UploadModal/UploadModal'
 export default function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [isFocus, setFocus] = useState(false)
-  const [searchResults, setSearchResults] = useState<SearchResultResponse[]>([])
+  const [searchResults, setSearchResults] = useState<
+    SearchResultResponse[] | undefined
+  >(undefined)
 
   const handleButtonClicked = async (searchText: string) => {
     if (!isFocus) return setFocus(true)
@@ -61,12 +63,18 @@ export default function App() {
         </div>
       ) : (
         <SearchResultTable
-          handleCloseButtonClicked={() => setSearchResults([])}
+          handleCloseButtonClicked={() => setSearchResults(undefined)}
         >
-          {searchResults?.map((result, index) => {
-            console.log(result)
-            return <SearchResult result={result} key={result.link + index} />
-          })}
+          {searchResults && searchResults.length == 0 ? (
+            <p className='bg-slate-500 dark:bg-slate-100 text-slate-100 dark:text-slate-800 py-1 px-2 rounded-sm animate-pulse'>
+              No se encontraron resultados
+            </p>
+          ) : (
+            searchResults?.map((result, index) => {
+              console.log(result)
+              return <SearchResult result={result} key={result.link + index} />
+            })
+          )}
         </SearchResultTable>
       )}
       <UploadModal />
