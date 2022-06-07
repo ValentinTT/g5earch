@@ -45,9 +45,14 @@ const SearchResult: React.FC<{
         animationClasses
       )}
     >
-      <div className='flex flex-col w-full'>
+      <div className='flex  w-full items-end'>
         <h3 className='truncate font-semibold'>{result.title}</h3>
-        <p className='truncate font-medium pl-2 text-sm'>{result.preview}</p>
+        {result.relevanceIndex && (
+          <span className='grow text-right text-xs h-fit'>
+            {result.relevanceIndex.toFixed(2)}
+          </span>
+        )}
+        {/* <p className='truncate font-medium pl-2 text-sm'>{result.preview}</p> */}
       </div>
     </a>
   )
