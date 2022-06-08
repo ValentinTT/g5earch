@@ -1,44 +1,46 @@
-import { useState } from 'react'
+import { useReducer } from 'react'
 import clsx from 'clsx'
 import { ThemeButton } from 'components/ThemeButton'
 import Title from 'components/Title'
 import SearchBar from 'components/SearchBar/SearchBar'
 import LoadingSpinner from 'components/LoadingSpinner'
-import { SearchResultResponse } from './@types/searchResultResponse'
 import SearchResult, { SearchResultTable } from 'components/SearchResult'
 import UploadModal from 'components/UploadModal/UploadModal'
+import { AppActions, appReducer, initialState } from 'reducer/reducer'
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [isFocus, setFocus] = useState(false)
-  const [searchResults, setSearchResults] = useState<
-    SearchResultResponse[] | undefined
-  >(undefined)
+  const [state, dispatch] = useReducer(appReducer, initialState)
 
   const handleButtonClicked = async (searchText: string) => {
-    if (!isFocus) return setFocus(true)
-    if (searchText === '') return
-    setIsLoading(true)
+    if (!state.isFocus)
+      return dispatch({
+        type: AppActions.updateFocus,
+        payload: { isFocus: true },
+      })
+    if (searchText === '') return undefined
+
+    dispatch({ type: AppActions.updateLoading, payload: { isLoading: true } })
     setTimeout(() => {
-      if (isLoading) setIsLoading(false)
+      if (!state.isLoading) return
+      dispatch({
+        type: AppActions.updateLoading,
+        payload: { isLoading: false },
+      })
     }, 3000)
+
     try {
       let res = await fetch('/search?text=' + encodeURIComponent(searchText))
-      let aux = await res.json()
-      console.log('Response: ', aux)
-      setSearchResults(() => {
-        setIsLoading(false)
-        return aux
+      let responses = await res.json()
+      console.log('Response: ', responses)
+      dispatch({
+        type: AppActions.updateData,
+        payload: { searchResults: responses },
       })
     } catch (e) {
-      console.log('Error')
-      setIsLoading((_) => {
-        setFocus(false)
-        return false
-      })
+      dispatch({ type: AppActions.error })
     }
   }
-  console.log('Search R: ', searchResults)
+
   return (
     <div
       className={clsx(
@@ -50,27 +52,39 @@ export default function App() {
     >
       <ThemeButton />
       <div className='flex flex-col justify-center items-center '>
-        <Title isFocus={isFocus}>G5earch!</Title>
+        <Title isFocus={state.isFocus}>G5earch!</Title>
         <SearchBar
-          isFocus={isFocus}
-          setFocus={setFocus}
+          isFocus={state.isFocus}
+          setFocus={(newFocus) =>
+            dispatch({
+              type: AppActions.updateFocus,
+              payload: { isFocus: newFocus },
+            })
+          }
           handleSearchButtonClicked={handleButtonClicked}
         />
       </div>
-      {isLoading ? (
+      {state.isLoading ? (
         <div className='pt-10'>
           <LoadingSpinner />
         </div>
       ) : (
         <SearchResultTable
-          handleCloseButtonClicked={() => setSearchResults(undefined)}
+          handleCloseButtonClicked={() =>
+            dispatch({
+              type: AppActions.updateData,
+              payload: {
+                searchResults: undefined,
+              },
+            })
+          }
         >
-          {searchResults && searchResults.length == 0 ? (
+          {state.searchResults && state.searchResults.length === 0 ? (
             <p className='bg-slate-500 dark:bg-slate-100 text-slate-100 dark:text-slate-800 py-1 px-2 rounded-sm animate-pulse'>
               No se encontraron resultados
             </p>
           ) : (
-            searchResults?.map((result, index) => {
+            state.searchResults?.map((result, index) => {
               console.log(result)
               return <SearchResult result={result} key={result.link + index} />
             })
