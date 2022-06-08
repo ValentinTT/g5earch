@@ -5,7 +5,13 @@ export enum DropStates {
   rejected,
 }
 
-export enum Actions {
+export interface DropState {
+  file?: File
+  message: string
+  borderColor: string
+}
+
+export enum ModalActions {
   onDragOver,
   onDragLeave,
   onDropAccepted,
@@ -13,16 +19,11 @@ export enum Actions {
   Restart,
 }
 
-export interface Action {
-  type: Actions
+export interface ModalAction {
+  type: ModalActions
   file?: File
 }
 
-export interface dropState {
-  file?: File
-  message: string
-  borderColor: string
-}
 export const dropInfo: { [key in DropStates]: string } = {
   [DropStates.none]: 'dark:border-slate-400 border-slate-400',
   [DropStates.onDrag]: 'border-blue-700',
@@ -30,7 +31,7 @@ export const dropInfo: { [key in DropStates]: string } = {
   [DropStates.rejected]: 'border-red-700',
 }
 
-export const initialState: dropState = {
+export const initialDropState: DropState = {
   message: `Drag 'n' drop some files here, or click to select files`,
   borderColor: dropInfo[DropStates.none],
 }

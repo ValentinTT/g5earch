@@ -1,39 +1,39 @@
 import {
-  Action,
-  Actions,
+  ModalAction,
+  ModalActions,
   dropInfo,
-  dropState,
+  DropState,
   DropStates,
-  initialState,
+  initialDropState,
 } from './modal.types'
 
-export function reducer(state: dropState, action: Action): dropState {
+export function reducer(state: DropState, action: ModalAction): DropState {
   const { type, file } = action
   switch (type) {
-    case Actions.onDragLeave:
-      if (state.file === undefined) return initialState
+    case ModalActions.onDragLeave:
+      if (state.file === undefined) return initialDropState
       return {
         ...state,
         borderColor: dropInfo[DropStates.accepted],
       }
-    case Actions.onDragOver:
+    case ModalActions.onDragOver:
       return {
         ...state,
         borderColor: dropInfo[DropStates.onDrag],
       }
-    case Actions.onDropAccepted:
+    case ModalActions.onDropAccepted:
       return {
         file,
         message: `File ${file?.name} successfully load`,
         borderColor: dropInfo[DropStates.accepted],
       }
-    case Actions.onDropRejected:
+    case ModalActions.onDropRejected:
       return {
         file: undefined,
         message: `Couldn't load file`,
         borderColor: dropInfo[DropStates.rejected],
       }
-    case Actions.Restart:
-      return initialState
+    case ModalActions.Restart:
+      return initialDropState
   }
 }

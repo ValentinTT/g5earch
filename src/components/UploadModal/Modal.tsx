@@ -4,12 +4,17 @@ import React, { useEffect, useReducer } from 'react'
 
 import Dropzone from 'react-dropzone'
 import { animationClasses, gradient } from '../../constants/constants'
-import { Action, Actions, dropState, initialState } from './modal.types'
+import {
+  ModalAction,
+  ModalActions,
+  DropState,
+  initialDropState,
+} from './modal.types'
 import { reducer } from './ModalReducer'
 
 const DropZoneModal: React.FC<{
-  state: dropState
-  dispatch: React.Dispatch<Action>
+  state: DropState
+  dispatch: React.Dispatch<ModalAction>
 }> = ({ state, dispatch }) => {
   return (
     <Dropzone
@@ -17,11 +22,11 @@ const DropZoneModal: React.FC<{
         'text/plain': ['.txt'],
       }}
       onDropAccepted={(acceptedFiles) =>
-        dispatch({ type: Actions.onDropAccepted, file: acceptedFiles[0] })
+        dispatch({ type: ModalActions.onDropAccepted, file: acceptedFiles[0] })
       }
-      onDragOver={() => dispatch({ type: Actions.onDragOver })}
-      onDragLeave={() => dispatch({ type: Actions.onDragLeave })}
-      onDropRejected={() => dispatch({ type: Actions.onDropRejected })}
+      onDragOver={() => dispatch({ type: ModalActions.onDragOver })}
+      onDragLeave={() => dispatch({ type: ModalActions.onDragLeave })}
+      onDropRejected={() => dispatch({ type: ModalActions.onDropRejected })}
       maxFiles={1}
     >
       {({ getRootProps, getInputProps }) => (
@@ -42,7 +47,7 @@ const DropZoneModal: React.FC<{
   )
 }
 
-const UploadButton: React.FC<{ state: dropState; closeModal: () => void }> = ({
+const UploadButton: React.FC<{ state: DropState; closeModal: () => void }> = ({
   state,
   closeModal,
 }) => {
@@ -85,10 +90,10 @@ const Modal: React.FC<{
   isVisible: boolean
   closeModal: () => void
 }> = ({ isVisible, closeModal }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(reducer, initialDropState)
 
   useEffect(() => {
-    dispatch({ type: Actions.Restart })
+    dispatch({ type: ModalActions.Restart })
   }, [isVisible])
 
   return (
